@@ -556,7 +556,7 @@ SCRIPT;
         $script = <<<SCRIPT
 ;(function () {
     $('form#{$id}').submit(function (e) {
-        e.preventDefault();
+        //e.preventDefault(); @link https://github.com/z-song/laravel-admin/issues/4782
         $(this).find('div.cascade-group.hide :input').attr('disabled', true);
     });
 })();

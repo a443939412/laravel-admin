@@ -32,7 +32,7 @@ use Illuminate\Support\Arr;
  * @method Field\Year           year($column, $label = '')
  * @method Field\Month          month($column, $label = '')
  * @method Field\DateRange      dateRange($start, $end, $label = '')
- * @method Field\DateMultiple   DateMultiple($column, $label = '')
+ * @method Field\DateMultiple   dateMultiple($column, $label = '')
  * @method Field\DateTimeRange  datetimeRange($start, $end, $label = '')
  * @method Field\TimeRange      timeRange($start, $end, $label = '')
  * @method Field\Number         number($column, $label = '')
@@ -76,7 +76,7 @@ trait HasFields
         'currency'          => Field\Currency::class,
         'date'              => Field\Date::class,
         'dateRange'         => Field\DateRange::class,
-        'DateMultiple'      => Field\DateMultiple::class,
+        'dateMultiple'      => Field\DateMultiple::class,
         'datetime'          => Field\Datetime::class,
         'dateTimeRange'     => Field\DatetimeRange::class,
         'datetimeRange'     => Field\DatetimeRange::class,

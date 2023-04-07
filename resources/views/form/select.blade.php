@@ -10,6 +10,7 @@
 
         <select class="form-control {{$class}}" style="width: 100%;" name="{{$name}}" {!! $attributes !!} >
             @if($groups)
+				<option value=""></option><!-- 提供默认空值更完美，不加也能正常传值 -->
                 @foreach($groups as $group)
                     <optgroup label="{{ $group['label'] }}">
                         @foreach($group['options'] as $select => $option)

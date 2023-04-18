@@ -2,7 +2,10 @@
 
 namespace Encore\Admin\Actions;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
+use PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
+use PhpOffice\PhpSpreadsheet\Reader\Exception as SpreadsheetReaderException;
 
 /**
  * Class Response.
@@ -221,7 +224,7 @@ class Response
     /**
      * @param \Exception $exception
      *
-     * @return mixed
+     * @return $this
      */
     public static function withException(\Exception $exception)
     {
@@ -231,6 +234,19 @@ class Response
 
         if ($exception instanceof ValidationException) {
             $message = collect($exception->errors())->flatten()->implode("\n");
+        } elseif ($exception instanceof QueryException) {
+            \Log::debug($exception->getMessage());
+
+            if ($exception->getCode() == '23000' && // 只适用于mysql驱动
+                strpos(substr($ex->getMessage(), 40, 90), '1062') !== false) { // php 8: str_contains()
+                $message = '重复数据[Duplicate entry]，请检查！';
+            } else {
+                $message = '内部错误[SQL Err]，请尝试联系系统维护人员！';
+            }
+        } elseif ($exception instanceof SpreadsheetException) {
+            $message = $exception instanceof SpreadsheetReaderException
+                ? '异常终止：请尝试将扩展名改为"xlsx"后重试(' . $exception->getMessage() . ')'
+                : '异常终止：请尝试删除多余工作表后重试 (' . $exception->getMessage() . ')';
         } else {
             $message = $exception->getMessage();
         }

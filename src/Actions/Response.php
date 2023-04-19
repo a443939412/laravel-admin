@@ -2,10 +2,12 @@
 
 namespace Encore\Admin\Actions;
 
+use Illuminate\Container\Container;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 use PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
 use PhpOffice\PhpSpreadsheet\Reader\Exception as SpreadsheetReaderException;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Response.
@@ -235,7 +237,11 @@ class Response
         if ($exception instanceof ValidationException) {
             $message = collect($exception->errors())->flatten()->implode("\n");
         } elseif ($exception instanceof QueryException) {
-            \Log::debug($exception->getMessage());
+            try {
+                Container::getInstance()->make(LoggerInterface::class)->debug($exception->getMessage());
+            } catch (\Exception $ex) {
+                throw $ex; // $hidden = Container::getInstance()->isProduction();
+            }
 
             if ($exception->getCode() == '23000' && // 只适用于mysql驱动
                 strpos(substr($ex->getMessage(), 40, 90), '1062') !== false) { // php 8: str_contains()

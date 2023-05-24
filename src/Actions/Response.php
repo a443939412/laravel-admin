@@ -237,14 +237,11 @@ class Response
         if ($exception instanceof ValidationException) {
             $message = collect($exception->errors())->flatten()->implode("\n");
         } elseif ($exception instanceof QueryException) {
-            try {
-                Container::getInstance()->make(LoggerInterface::class)->debug($exception->getMessage());
-            } catch (\Exception $ex) {
-                throw $ex; // $hidden = Container::getInstance()->isProduction();
-            }
+            // $hidden = Container::getInstance()->isProduction();
+            Container::getInstance()->make(LoggerInterface::class)->error($exception->getMessage());
 
             if ($exception->getCode() == '23000' && // 只适用于mysql驱动
-                strpos(substr($ex->getMessage(), 40, 90), '1062') !== false) { // php 8: str_contains()
+                strpos(substr($exception->getMessage(), 40, 90), '1062') !== false) { // php 8: str_contains()
                 $message = '重复数据[Duplicate entry]，请检查！';
             } else {
                 $message = '内部错误[SQL Err]，请尝试联系系统维护人员！';

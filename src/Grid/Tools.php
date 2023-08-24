@@ -53,7 +53,7 @@ class Tools implements Renderable
     /**
      * Append tools.
      *
-     * @param AbstractTool|string $tool
+     * @param AbstractTool|Renderable|Htmlable|string $tool
      *
      * @return $this
      */
@@ -71,7 +71,7 @@ class Tools implements Renderable
     /**
      * Prepend a tool.
      *
-     * @param AbstractTool|string $tool
+     * @param AbstractTool|Renderable|Htmlable|string $tool
      *
      * @return $this
      */

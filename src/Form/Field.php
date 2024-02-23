@@ -971,9 +971,9 @@ class Field implements Renderable
         }
 
         if (is_string($this->column)) {
-            if (!Arr::has($input, $this->column)) {
+            /*if (!Arr::has($input, $this->column)) { 修复Bug：行内编辑、RowAction、BatchAction等异步提交时，如果参数值为空，则空参数会被过滤。即参数不传递
                 return false;
-            }
+            }*/
 
             $input = $this->sanitizeInput($input, $this->column);
 
@@ -1006,7 +1006,7 @@ class Field implements Renderable
     protected function sanitizeInput($input, $column)
     {
         if ($this instanceof Field\MultipleSelect) {
-            $value = Arr::get($input, $column);
+            $value = Arr::get($input, $column, []);
             Arr::set($input, $column, array_filter($value));
         }
 

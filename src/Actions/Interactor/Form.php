@@ -283,7 +283,7 @@ class Form extends Interactor
     {
         $field = new Field\MultipleImage($column, $this->formatLabel($label));
 
-        $this->addField($field)->setView('admin::actions.form.muitplefile');
+        $this->addField($field)->setView('admin::actions.form.multiplefile');
 
         return $field;
     }

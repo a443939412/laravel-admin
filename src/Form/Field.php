@@ -971,9 +971,9 @@ class Field implements Renderable
         }
 
         if (is_string($this->column)) {
-            /*if (!Arr::has($input, $this->column)) { 修复Bug：行内编辑、RowAction、BatchAction等异步提交时，如果参数值为空，则空参数会被过滤。即参数不传递
+            if (!Arr::has($input, $this->column) && Arr::hasAny($input, ['_editable', '_edit_inline'])) { /* @see Form::isEditable() 修复Bug：行内编辑、RowAction、BatchAction等异步提交时，如果参数值为空，则“空参数”会被过滤掉（即参数不传递），导致验证不生效 */
                 return false;
-            }*/
+            }
 
             $input = $this->sanitizeInput($input, $this->column);
 

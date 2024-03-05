@@ -971,9 +971,9 @@ class Field implements Renderable
         }
 
         if (is_string($this->column)) {
-            if (!Arr::has($input, $this->column) && Arr::hasAny($input, ['_editable', '_edit_inline'])) { /* @see Form::isEditable() 修复Bug：行内编辑、RowAction、BatchAction等异步提交时，如果参数值为空，则“空参数”会被过滤掉（即参数不传递），导致验证不生效 */
+            /*if (!Arr::has($input, $this->column)) { // 修复Bug：行内编辑、RowAction、BatchAction等异步提交时，如果参数值为空，则“空参数”会被过滤掉（即参数不传递），导致验证不生效
                 return false;
-            }
+            }*/
 
             $input = $this->sanitizeInput($input, $this->column);
 
@@ -1006,8 +1006,8 @@ class Field implements Renderable
     protected function sanitizeInput($input, $column)
     {
         if ($this instanceof Field\MultipleSelect) {
-            $value = Arr::get($input, $column, []);
-            Arr::set($input, $column, array_filter($value));
+            $value = Arr::get($input, $column); // []不能当默认值，因为键可能存在但是返回null
+            Arr::set($input, $column, is_array($value) ? array_filter($value) : $value);
         }
 
         return $input;

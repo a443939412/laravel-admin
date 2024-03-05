@@ -325,7 +325,7 @@ class Form implements Renderable
         $data = \request()->all();
 
         // Handle validation errors.
-        if ($validationMessages = $this->validationMessages($data)) {
+        if ($validationMessages = $this->validationMessages($data, isset($data['_order']) && count($data) === 2)) { // array_key_exists('_order', $data)
             return $this->responseValidationError($validationMessages);
         }
 
@@ -525,7 +525,7 @@ class Form implements Renderable
         $this->setFieldOriginalValue();
 
         // Handle validation errors.
-        if ($validationMessages = $this->validationMessages($data)) {
+        if ($validationMessages = $this->validationMessages($data, $isEditable)) {
             if (!$isEditable) {
                 return back()->withInput()->withErrors($validationMessages);
             }
@@ -1120,16 +1120,17 @@ class Form implements Renderable
      * Get validation messages.
      *
      * @param array $input
+     * @param bool $skip_if_not_present 不安全，很容易绕过验证
      *
      * @return MessageBag|bool
      */
-    public function validationMessages($input)
+    public function validationMessages($input, $skip_if_not_present = false)
     {
-        $failedValidators = [];
+        $failedValidators = []; // $skip_if_not_present ??= $this->isEditable($input);
 
         /** @var Field $field */
         foreach ($this->fields() as $field) {
-            if (!$validator = $field->getValidator($input)) {
+            if ($skip_if_not_present && is_string($field->column()) && !Arr::has($input, $field->column()) || !$validator = $field->getValidator($input)) {
                 continue;
             }
 

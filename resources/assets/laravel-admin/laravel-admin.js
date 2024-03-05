@@ -66,6 +66,7 @@ $(document).on('pjax:complete', function (xhr) {
     }
     NProgress.done();
     $.admin.grid.selects = {};
+    $('[data-toggle="popover"]').popover(); /** 修复Bug：Popover 弹窗效果在 pjax 请求后失效。Since v1.8.24 2024/03/04 */
 });
 
 $(document).click(function () {
@@ -81,6 +82,12 @@ $(function () {
     var menu = $('.sidebar-menu li > a[href$="' + (location.pathname + location.search + location.hash) + '"]').parent().addClass('active');
     menu.parents('ul.treeview-menu').addClass('menu-open');
     menu.parents('li.treeview').addClass('active');
+    /**
+     * 菜单超过一屏时展示不全（不能下拉）。Since v1.8.24 2024/03/04
+     * 1. 翻转jq对象：$(menu.parents('li.treeview').toArray().reverse())
+     * 2. menu.parents('li.treeview').find('> a').trigger('click'); 能展示全，但是当前菜单的 active class丢失
+     */
+    $(".content-wrapper, .right-side").css("min-height", $('.sidebar').height()); // $.AdminLTE.options.controlSidebarOptions.selector
 
     $('[data-toggle="popover"]').popover();
 

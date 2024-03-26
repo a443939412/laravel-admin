@@ -85,9 +85,9 @@ $(function () {
     /**
      * 菜单超过一屏时展示不全（不能下拉）。Since v1.8.24 2024/03/04
      * 1. 翻转jq对象：$(menu.parents('li.treeview').toArray().reverse())
-     * 2. menu.parents('li.treeview').find('> a').trigger('click'); 能展示全，但是当前菜单的 active class丢失
+     * 2. $(".content-wrapper, .right-side").css("min-height", Math.max($('.sidebar').height(), $(window).height() - $(".main-header").height() - $(".main-footer").outerHeight()));
      */
-    $(".content-wrapper, .right-side").css("min-height", $('.sidebar').height()); // $.AdminLTE.options.controlSidebarOptions.selector
+    $.AdminLTE.layout.fix(); // $.AdminLTE.options.controlSidebarOptions.selector
 
     $('[data-toggle="popover"]').popover();
 

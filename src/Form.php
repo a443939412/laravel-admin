@@ -525,7 +525,7 @@ class Form implements Renderable
         $this->setFieldOriginalValue();
 
         // Handle validation errors.
-        if ($validationMessages = $this->validationMessages($data, $isEditable)) {
+        if ($validationMessages = $this->validationMessages($data, $isEditable || isset($data[Field\File::FILE_DELETE_FLAG]))) { // request()->capture()->all() 获取到的数据是未经中间件处理的原始数据，如：TrimStrings & ConvertEmptyStringsToNull
             if (!$isEditable) {
                 return back()->withInput()->withErrors($validationMessages);
             }

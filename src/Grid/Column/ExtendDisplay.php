@@ -3,6 +3,7 @@
 namespace Encore\Admin\Grid\Column;
 
 use Carbon\Carbon;
+use Closure;
 use Encore\Admin\Grid\Column;
 use Encore\Admin\Grid\Displayers;
 use Encore\Admin\Grid\Model;

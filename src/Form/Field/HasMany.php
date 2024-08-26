@@ -588,7 +588,7 @@ EOT;
          * {count} is increment number of current sub form count.
          */
         $script = <<<EOT
-var index = $('template.{$this->column}-tpl').prev().find('>tbody>tr [name^="{$this->column}[new_"]').closest('.fields-group').length; // 原值0：后台rule验证失败前端渲染old()中的数据时，如果old包含“new_”，则索引不正确
+var index = $('template.{$this->column}-tpl').prev().find('>tbody>tr [name^="{$this->column}[new_"]').closest('.fields-group').length; // 原值0：后端rule验证失败前端渲染old()中的数据时，如果old包含“new_”，则索引不正确
 $('#has-many-{$this->column}').on('click', '.add', function () {
 
     var tpl = $('template.{$this->column}-tpl');
